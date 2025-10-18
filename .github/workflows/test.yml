@@ -11,6 +11,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
 
     strategy:
       matrix:
@@ -39,8 +43,21 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run tests with pytest
+      id: pytest
       run: |
-        pytest tests/ -v --tb=short
+        pytest tests/ -v --tb=short --junitxml=pytest-report.xml --html=pytest-report.html --self-contained-html
+      continue-on-error: true
+
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always() && github.event_name == 'pull_request'
+      with:
+        files: |
+          pytest-report.xml
+        comment_mode: always
+        check_name: Test Results
+        report_individual_runs: true
+        deduplicate_classes_by_file_name: false
 
     - name: Upload test results
       if: always()
@@ -49,5 +66,10 @@ jobs:
         name: pytest-results
         path: |
           pytest-report.xml
+          pytest-report.html
           .coverage
         retention-days: 30
+
+    - name: Fail if tests failed
+      if: steps.pytest.outcome == 'failure'
+      run: exit 1
