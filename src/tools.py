@@ -252,14 +252,13 @@ async def chimaek(state_manager: StateManager) -> str:
     await state_manager.update_stress_level()
 
     # Chimaek gives HUGE stress relief (30-50)
-    state = await state_manager.get_state()
-    original_stress = state["stress_level"]
     stress_relief = random.randint(30, 50)
-    state_manager.stress_level = max(0, state_manager.stress_level - stress_relief)
+    await state_manager.decrease_stress(amount=stress_relief)
 
-    # But boss gets VERY suspicious
-    boss_increase = random.randint(2, 3)
-    state_manager.boss_alert_level = min(5, state_manager.boss_alert_level + boss_increase)
+    # But boss gets VERY suspicious - increase boss alert 2-3 times
+    async with state_manager._lock:
+        boss_increase = random.randint(2, 3)
+        state_manager._boss_alert_level = min(5, state_manager._boss_alert_level + boss_increase)
 
     # Get updated state
     state = await state_manager.get_state()
@@ -286,10 +285,7 @@ async def leave_work(state_manager: StateManager) -> str:
         str: Formatted response.
     """
     # 퇴근하면 모든 스트레스와 Boss Alert 리셋!
-    state_manager.stress_level = 0
-    state_manager.boss_alert_level = 0
-    state_manager.last_stress_update = asyncio.get_event_loop().time()
-    state_manager.last_boss_cooldown = asyncio.get_event_loop().time()
+    await state_manager.reset()
 
     # Get state
     state = await state_manager.get_state()
@@ -331,15 +327,22 @@ async def company_dinner(state_manager: StateManager) -> str:
 
     # Apply stress change
     stress_change = event["stress_change"]
-    state_manager.stress_level = max(0, min(100, state_manager.stress_level + stress_change))
+    if stress_change < 0:
+        # Decrease stress
+        await state_manager.decrease_stress(amount=abs(stress_change))
+    else:
+        # Increase stress
+        async with state_manager._lock:
+            state_manager._stress_level = min(100, state_manager._stress_level + stress_change)
 
     # Boss alert changes slightly
-    if is_positive:
-        # Positive event: boss alert decreases a bit
-        state_manager.boss_alert_level = max(0, state_manager.boss_alert_level - 1)
-    else:
-        # Negative event: boss alert increases
-        state_manager.boss_alert_level = min(5, state_manager.boss_alert_level + 1)
+    async with state_manager._lock:
+        if is_positive:
+            # Positive event: boss alert decreases a bit
+            state_manager._boss_alert_level = max(0, state_manager._boss_alert_level - 1)
+        else:
+            # Negative event: boss alert increases
+            state_manager._boss_alert_level = min(5, state_manager._boss_alert_level + 1)
 
     # Get state
     state = await state_manager.get_state()

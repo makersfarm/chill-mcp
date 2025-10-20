@@ -29,28 +29,82 @@ def format_response(
     stress_level = max(0, min(100, stress_level))
     boss_alert_level = max(0, min(5, boss_alert_level))
 
-    response = ""
-
-    # Add ASCII art if enabled and tool name is provided
+    # Build ASCII art section if enabled
+    ascii_section = ""
     if show_ascii_art and tool_name:
         tool_art = ascii_art.get_tool_ascii_art(tool_name)
         if tool_art:
-            response += tool_art + "\n"
+            ascii_section += tool_art + "\n"
 
-    # Add status dashboard
     if show_ascii_art:
         dashboard = ascii_art.create_status_dashboard(stress_level, boss_alert_level)
-        response += dashboard + "\n"
+        ascii_section += dashboard + "\n"
 
-    # Add boss state if alert level is high
     if show_ascii_art and boss_alert_level >= 3:
         boss_art = ascii_art.get_boss_state_art(boss_alert_level)
-        response += boss_art + "\n"
+        ascii_section += boss_art + "\n"
 
-    # Add break summary and required fields
-    response += f"{break_summary}\n\n"
-    response += f"Break Summary: {break_summary}\n"
-    response += f"Stress Level: {stress_level}\n"
-    response += f"Boss Alert Level: {boss_alert_level}"
+    # Create user-friendly message
+    stress_emoji = _get_stress_emoji(stress_level)
+    boss_emoji = _get_boss_emoji(boss_alert_level)
+
+    response = f"""🎨 **AI Agent 상태 업데이트!**
+
+{break_summary}
+
+📊 **현재 상태:**
+{stress_emoji} Stress Level: {stress_level}% {'[' + '█' * (stress_level // 10) + '░' * (10 - stress_level // 10) + ']'}
+{boss_emoji} Boss Alert: {boss_alert_level}/5 {'[' + '█' * boss_alert_level + '░' * (5 - boss_alert_level) + ']'}
+
+"""
+
+    # Add ASCII art instruction for Claude
+    if ascii_section:
+        response += f"""
+🖼️ **ASCII 아트 (사용자에게 코드 블록으로 보여주세요!):**
+
+```
+{ascii_section.strip()}
+```
+
+"""
+
+    # Add required fields for parsing (at the end)
+    response += f"""
+---
+Break Summary: {break_summary}
+Stress Level: {stress_level}
+Boss Alert Level: {boss_alert_level}
+"""
 
     return response
+
+
+def _get_stress_emoji(stress_level: int) -> str:
+    """Get emoji based on stress level."""
+    if stress_level < 20:
+        return "😊"
+    elif stress_level < 40:
+        return "🙂"
+    elif stress_level < 60:
+        return "😐"
+    elif stress_level < 80:
+        return "😰"
+    else:
+        return "😫"
+
+
+def _get_boss_emoji(boss_alert: int) -> str:
+    """Get emoji based on boss alert level."""
+    if boss_alert == 0:
+        return "😎"
+    elif boss_alert == 1:
+        return "👀"
+    elif boss_alert == 2:
+        return "🤨"
+    elif boss_alert == 3:
+        return "😠"
+    elif boss_alert == 4:
+        return "💢"
+    else:
+        return "🚨"
