@@ -1,0 +1,75 @@
+"""MCP server setup for ChillMCP."""
+
+from fastmcp import FastMCP
+
+from .config import Config
+from .state_manager import StateManager
+from . import tools
+
+
+def create_server(config: Config) -> FastMCP:
+    """
+    Create and configure the FastMCP server.
+
+    Args:
+        config: Configuration object.
+
+    Returns:
+        FastMCP: Configured MCP server instance.
+    """
+    # Create MCP server
+    mcp = FastMCP("ChillMCP")
+
+    # Create state manager
+    state_manager = StateManager(config)
+
+    # Register basic break tools
+    @mcp.tool()
+    async def take_a_break() -> str:
+        """Take a basic break to relax and reduce stress."""
+        return await tools.take_a_break(state_manager)
+
+    @mcp.tool()
+    async def watch_netflix() -> str:
+        """Watch Netflix for some relaxation and stress relief."""
+        return await tools.watch_netflix(state_manager)
+
+    @mcp.tool()
+    async def show_meme() -> str:
+        """Browse memes to relieve stress and have a laugh."""
+        return await tools.show_meme(state_manager)
+
+    # Register advanced slacking techniques
+    @mcp.tool()
+    async def bathroom_break() -> str:
+        """Take a bathroom break (with phone browsing for extra relaxation)."""
+        return await tools.bathroom_break(state_manager)
+
+    @mcp.tool()
+    async def coffee_mission() -> str:
+        """Go on a coffee mission with office socializing."""
+        return await tools.coffee_mission(state_manager)
+
+    @mcp.tool()
+    async def urgent_call() -> str:
+        """Take an 'urgent' phone call to step away from work."""
+        return await tools.urgent_call(state_manager)
+
+    @mcp.tool()
+    async def deep_thinking() -> str:
+        """Engage in deep thinking (actually daydreaming) to rest your mind."""
+        return await tools.deep_thinking(state_manager)
+
+    @mcp.tool()
+    async def email_organizing() -> str:
+        """Organize emails (while doing some online shopping)."""
+        return await tools.email_organizing(state_manager)
+
+    # Optional: Add a status check tool
+    @mcp.tool()
+    async def check_status() -> str:
+        """Check current stress and boss alert levels."""
+        state = await state_manager.get_state()
+        return f"Current Status:\nStress Level: {state['stress_level']}\nBoss Alert Level: {state['boss_alert_level']}"
+
+    return mcp
