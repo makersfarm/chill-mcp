@@ -10,22 +10,15 @@ import time
 import json
 import re
 import sys
-import os
 from typing import Tuple, Optional, Dict, Any
 from dataclasses import dataclass
 from enum import Enum
 
-# Windows 환경에서 UTF-8 출력 설정
-if sys.platform == 'win32':
-    import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
-
 
 class TestResult(Enum):
-    PASS = "[PASS]"
-    FAIL = "[FAIL]"
-    SKIP = "[SKIP]"
+    PASS = "✅ PASS"
+    FAIL = "❌ FAIL"
+    SKIP = "⏭️  SKIP"
 
 
 @dataclass

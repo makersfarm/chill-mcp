@@ -72,21 +72,4 @@ def create_server(config: Config) -> FastMCP:
         state = await state_manager.get_state()
         return f"Current Status:\nStress Level: {state['stress_level']}\nBoss Alert Level: {state['boss_alert_level']}"
 
-    # ========== Optional Extra Features (For Extra Points!) ==========
-
-    @mcp.tool()
-    async def chimaek() -> str:
-        """Enjoy chicken and beer (치맥) for ultimate stress relief! Warning: Boss might notice."""
-        return await tools.chimaek(state_manager)
-
-    @mcp.tool()
-    async def leave_work() -> str:
-        """Leave work immediately and go home! Resets all stress and boss alert."""
-        return await tools.leave_work(state_manager)
-
-    @mcp.tool()
-    async def company_dinner() -> str:
-        """Attend company dinner with random events! Could be amazing or terrible."""
-        return await tools.company_dinner(state_manager)
-
     return mcp
