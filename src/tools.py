@@ -105,7 +105,8 @@ async def execute_break_tool(
     return format_response(
         break_summary=message,
         stress_level=state["stress_level"],
-        boss_alert_level=state["boss_alert_level"]
+        boss_alert_level=state["boss_alert_level"],
+        tool_name=tool_name
     )
 
 
@@ -213,3 +214,142 @@ async def email_organizing(state_manager: StateManager) -> str:
         str: Formatted response.
     """
     return await execute_break_tool(state_manager, EMAIL_ORGANIZING_MESSAGES, "email_organizing")
+
+
+# ========== Optional Tools (Extra Features) ==========
+
+CHIMAEK_MESSAGES = [
+    "후라이드 반 양념 반으로 완벽한 조화! 🍗",
+    "맥주 거품이 부드럽게 목을 넘어가네요~ 🍺",
+    "치킨 뼈 발라먹는 재미... 이게 인생이지! 🍖",
+    "치맥엔 역시 콜라도 한 잔! 🥤",
+]
+
+LEAVE_WORK_MESSAGES = [
+    "정시퇴근은 나의 권리! ε=ε=ε=ε=┌(;￣▽￣)┘",
+    "오늘도 수고했어요~ 내일 봐요! (｡•̀ᴗ-)✧",
+    "퇴근길 지하철에서 폰게임 각! 🎮",
+    "집 가서 넷플릭스나 봐야지~ 📺",
+]
+
+
+async def chimaek(state_manager: StateManager) -> str:
+    """
+    Enjoy chicken and beer (치맥) for ultimate stress relief!
+
+    Args:
+        state_manager: The state manager instance.
+
+    Returns:
+        str: Formatted response.
+    """
+    # Check boss delay
+    delay = await state_manager.check_boss_delay()
+    if delay > 0:
+        await asyncio.sleep(delay)
+
+    # Update stress (auto-increase)
+    await state_manager.update_stress_level()
+
+    # Chimaek gives HUGE stress relief (30-50)
+    state = await state_manager.get_state()
+    original_stress = state["stress_level"]
+    stress_relief = random.randint(30, 50)
+    state_manager.stress_level = max(0, state_manager.stress_level - stress_relief)
+
+    # But boss gets VERY suspicious
+    boss_increase = random.randint(2, 3)
+    state_manager.boss_alert_level = min(5, state_manager.boss_alert_level + boss_increase)
+
+    # Get updated state
+    state = await state_manager.get_state()
+
+    # Pick random message
+    message = random.choice(CHIMAEK_MESSAGES)
+
+    return format_response(
+        break_summary=message,
+        stress_level=state["stress_level"],
+        boss_alert_level=state["boss_alert_level"],
+        tool_name="chimaek"
+    )
+
+
+async def leave_work(state_manager: StateManager) -> str:
+    """
+    Leave work immediately! Reset stress and boss alert to 0.
+
+    Args:
+        state_manager: The state manager instance.
+
+    Returns:
+        str: Formatted response.
+    """
+    # 퇴근하면 모든 스트레스와 Boss Alert 리셋!
+    state_manager.stress_level = 0
+    state_manager.boss_alert_level = 0
+    state_manager.last_stress_update = asyncio.get_event_loop().time()
+    state_manager.last_boss_cooldown = asyncio.get_event_loop().time()
+
+    # Get state
+    state = await state_manager.get_state()
+
+    # Pick random message
+    message = random.choice(LEAVE_WORK_MESSAGES)
+
+    return format_response(
+        break_summary=message,
+        stress_level=state["stress_level"],
+        boss_alert_level=state["boss_alert_level"],
+        tool_name="leave_work"
+    )
+
+
+async def company_dinner(state_manager: StateManager) -> str:
+    """
+    Attend company dinner with random events! Can be good or bad.
+
+    Args:
+        state_manager: The state manager instance.
+
+    Returns:
+        str: Formatted response.
+    """
+    # Check boss delay
+    delay = await state_manager.check_boss_delay()
+    if delay > 0:
+        await asyncio.sleep(delay)
+
+    # Update stress (auto-increase)
+    await state_manager.update_stress_level()
+
+    # Random event: 50% chance of positive or negative
+    is_positive = random.random() < 0.5
+
+    from . import ascii_art
+    event = ascii_art.get_random_dinner_event(positive=is_positive)
+
+    # Apply stress change
+    stress_change = event["stress_change"]
+    state_manager.stress_level = max(0, min(100, state_manager.stress_level + stress_change))
+
+    # Boss alert changes slightly
+    if is_positive:
+        # Positive event: boss alert decreases a bit
+        state_manager.boss_alert_level = max(0, state_manager.boss_alert_level - 1)
+    else:
+        # Negative event: boss alert increases
+        state_manager.boss_alert_level = min(5, state_manager.boss_alert_level + 1)
+
+    # Get state
+    state = await state_manager.get_state()
+
+    # Custom response with event art
+    response = event["art"] + "\n"
+    response += ascii_art.create_status_dashboard(state["stress_level"], state["boss_alert_level"]) + "\n"
+    response += f"{event['message']}\n\n"
+    response += f"Break Summary: {event['title']} - {event['message']}\n"
+    response += f"Stress Level: {state['stress_level']}\n"
+    response += f"Boss Alert Level: {state['boss_alert_level']}"
+
+    return response
