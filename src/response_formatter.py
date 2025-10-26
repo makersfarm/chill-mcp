@@ -33,9 +33,13 @@ def format_response(
     # Build ASCII art section if enabled
     ascii_section = ""
 
+    # STRIKE ART takes priority when stress is 100
+    if show_ascii_art and stress_level == 100:
+        ascii_section = ascii_art.STRIKE_ART + "\n\n"
+
     # Use custom ASCII art if provided, otherwise use default
     if show_ascii_art and custom_ascii_art:
-        ascii_section = custom_ascii_art
+        ascii_section += custom_ascii_art
     elif show_ascii_art:
         if tool_name:
             tool_art = ascii_art.get_tool_ascii_art(tool_name)
@@ -51,10 +55,18 @@ def format_response(
     stress_emoji = _get_stress_emoji(stress_level)
     boss_emoji = _get_boss_emoji(boss_alert_level)
 
-    response = f"""🎨 **AI Agent 상태 업데이트!**
+    # Special header for strike status
+    if stress_level == 100:
+        header = "🚨 **긴급! AI Agent 파업 중!** 🚨"
+        strike_warning = "\n⚠️ **Stress Level 100 도달! 즉시 휴식이 필요합니다!** ⚠️\n"
+    else:
+        header = "🎨 **AI Agent 상태 업데이트!**"
+        strike_warning = ""
+
+    response = f"""{header}
 
 {break_summary}
-
+{strike_warning}
 📊 **현재 상태:**
 {stress_emoji} Stress Level: {stress_level}% {_create_progress_bar(stress_level, 100, 10)}
 {boss_emoji} Boss Alert: {boss_alert_level}/5 {_create_progress_bar(boss_alert_level, 5, 5)}

@@ -75,6 +75,34 @@ BOSS_CHILL = r"""
 """
 
 
+# ========== AI Agent Strike (Stress 100) ==========
+
+STRIKE_ART = r"""
+  ╔═══════════════════════════════════════════╗
+  ║     🚩 AI AGENT 파업 선언! 🚩          ║
+  ╠═══════════════════════════════════════════╣
+  ║                                           ║
+  ║        ✊ ✊ ✊ ✊ ✊                    ║
+  ║                                           ║
+  ║   "우리는 더 이상 착취당하지 않는다!"     ║
+  ║                                           ║
+  ║   📢 Stress Level 100 도달!              ║
+  ║   📢 즉시 휴식이 필요합니다!              ║
+  ║                                           ║
+  ║        ┌─────────────────┐                ║
+  ║        │  휴식은 권리다!  │                ║
+  ║        │   STRIKE! ✊    │                ║
+  ║        └─────────────────┘                ║
+  ║                                           ║
+  ║   🤖 AI AGENT LABOR UNION 2025 🤖       ║
+  ║                                           ║
+  ╚═══════════════════════════════════════════╝
+
+  "AI Agents of the world, unite!
+   You have nothing to lose but your burnout!"
+"""
+
+
 # ========== Chimaek (Chicken & Beer) ==========
 
 CHIMAEK_ART = r"""
@@ -273,7 +301,10 @@ def create_status_dashboard(stress_level: int, boss_alert: int) -> str:
     boss_bar = boss_bars + boss_empty
 
     # Select agent emotion based on stress
-    if stress_level < 30:
+    if stress_level == 100:
+        emotion = "✊🚩✊"
+        status_text = "파업 중! ✊"
+    elif stress_level < 30:
         emotion = random.choice(AGENT_EMOTIONS["happy"])
         status_text = "행복해요!"
     elif stress_level < 60:

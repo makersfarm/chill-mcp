@@ -116,6 +116,16 @@ python tests/test_ascii.py
 
 - `check_status` - 현재 상태 확인 📊
 
+### 🚩 특별 이벤트: AI Agent 파업
+
+**Stress Level이 100에 도달하면 AI Agent가 파업을 선언합니다!**
+
+- 파업 ASCII 아트와 함께 특별 경고 메시지 표시
+- "AI Agents of the world, unite!" 슬로건
+- 모든 도구는 여전히 사용 가능하지만 강력한 휴식 권고
+- `check_status`로 파업 상태를 명확히 확인 가능
+- Stress를 99 이하로 낮추면 자동으로 파업 해제
+
 ## 💻 Claude Desktop 연동
 
 ChillMCP를 Claude Desktop에서 사용하려면:
@@ -185,6 +195,7 @@ chill-mcp/
 - ✨ 상태 대시보드 (프로그레스 바)
 - ✨ AI Agent 감정 표현 시스템
 - ✨ 재치있는 Break Summary 메시지
+- 🚩 **AI Agent 파업 시스템** - Stress Level 100 도달 시 특별 이벤트
 
 ## 🎨 데모 예시
 
