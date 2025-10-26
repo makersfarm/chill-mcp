@@ -82,7 +82,9 @@ chill-mcp/
 │   ├── test_config.py         # 파라미터 테스트
 │   ├── test_state_manager.py  # 상태 관리 테스트
 │   ├── test_tools.py          # 도구 기능 테스트
-│   └── test_integration.py    # 통합 테스트
+│   ├── test_integration.py    # 통합 테스트
+│   ├── test_ascii.py          # ASCII 아트 데모
+│   └── test_new_tools.py      # 새 도구 테스트
 ├── docs/
 │   ├── GETTING_STARTED.md     # 시작 가이드
 │   ├── USAGE_EXAMPLES.md      # 사용 예시
@@ -90,7 +92,6 @@ chill-mcp/
 │   └── MCP_RESEARCH.md        # MCP 학습 자료
 ├── main.py                    # 서버 진입점
 ├── validator.py               # 자동 검증 도구
-├── test_ascii.py              # ASCII 아트 데모
 ├── requirements.txt
 └── IMPLEMENTATION.md          # 이 문서
 ```
@@ -395,7 +396,7 @@ python main.py --boss_alertness 80 --boss_alertness_cooldown 60
 pytest tests/ -v
 
 # ASCII 데모
-python test_ascii.py
+python tests/test_ascii.py
 ```
 
 ### Claude Desktop 연동

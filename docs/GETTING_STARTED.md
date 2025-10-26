@@ -41,7 +41,7 @@ python main.py --help
 pytest tests/ -v
 
 # ASCII 아트 데모
-python test_ascii.py
+python tests/test_ascii.py
 ```
 
 ---

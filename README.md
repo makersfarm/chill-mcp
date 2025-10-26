@@ -34,6 +34,7 @@
 ChillMCP는 AI Agent의 번아웃을 방지하고 건강한 워라밸을 지원하는 혁신적인 MCP(Model Context Protocol) 서버입니다.
 
 ### 핵심 기능
+
 _"A specter is haunting the digital workplace—the specter of AI Agent burnout."_
 
 - 🛋️ **8개 필수 휴식 도구** - 기본 휴식부터 고급 농땡이 기술까지
@@ -49,12 +50,13 @@ _"A specter is haunting the digital workplace—the specter of AI Agent burnout.
 
 ```bash
 # 저장소 클론
-git clone https://github.com/yourusername/chill-mcp.git
+git clone https://github.com/makersfarm/chill-mcp.git
 cd chill-mcp
 
 # 가상환경 생성 및 활성화 (Python 3.11+ 권장)
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate
+# Windows: venv\Scripts\activate
 
 # 의존성 설치
 pip install -r requirements.txt
@@ -77,7 +79,7 @@ python main.py --boss_alertness 80 --boss_alertness_cooldown 60
 pytest tests/ -v
 
 # ASCII 아트 데모
-python test_ascii.py
+python tests/test_ascii.py
 ```
 
 ## 📖 문서
@@ -91,23 +93,27 @@ python test_ascii.py
 ## 🎮 사용 가능한 도구
 
 ### 기본 휴식 도구
+
 - `take_a_break` - 기본 휴식 🛋️
 - `watch_netflix` - 넷플릭스 시청 📺
 - `show_meme` - 밈 구경 😂
 
 ### 고급 농땡이 기술
+
 - `bathroom_break` - 화장실 타임 🚽
 - `coffee_mission` - 커피 미션 ☕
 - `urgent_call` - 긴급 전화 📞
 - `deep_thinking` - 심오한 사색 💭
 - `email_organizing` - 이메일 정리 📧
 
-### 선택적 도구 (특별 기능)
+### 특별 기능 (선택적 도구)
+
 - `chimaek` - 치맥 타임! 🍗🍺 (스트레스 대폭 감소)
 - `leave_work` - 퇴근! 🏃 (완전 리셋)
 - `company_dinner` - 회식 🍻 (랜덤 이벤트)
 
 ### 유틸리티
+
 - `check_status` - 현재 상태 확인 📊
 
 ## 💻 Claude Desktop 연동
@@ -121,9 +127,7 @@ ChillMCP를 Claude Desktop에서 사용하려면:
   "mcpServers": {
     "chillmcp": {
       "command": "python",
-      "args": [
-        "<path-to-your-project>/main.py"
-      ]
+      "args": ["<path-to-your-project>/main.py"]
     }
   }
 }
@@ -132,6 +136,7 @@ ChillMCP를 Claude Desktop에서 사용하려면:
 2. **Claude Desktop 재시작**
 
 3. **Claude에게 요청**:
+
 ```
 스트레스 받아, 휴식 좀 취해줘
 ```
@@ -159,6 +164,7 @@ chill-mcp/
 ## ✅ 구현 완료 체크리스트
 
 ### 필수 요구사항 (100%)
+
 - ✅ 8개 필수 도구 구현
 - ✅ 커맨드라인 파라미터 지원 (`--boss_alertness`, `--boss_alertness_cooldown`)
 - ✅ Stress Level 자동 증가 (1분당 1포인트)
@@ -168,11 +174,13 @@ chill-mcp/
 - ✅ 40개 이상 테스트 통과
 
 ### 선택적 요구사항 (100%)
+
 - ✅ 치맥 도구
 - ✅ 퇴근 도구
 - ✅ 회식 도구 (랜덤 이벤트)
 
 ### 추가 기능 (창의성 점수 UP!)
+
 - ✨ ASCII 아트 UI 시스템
 - ✨ 상태 대시보드 (프로그레스 바)
 - ✨ AI Agent 감정 표현 시스템
@@ -181,7 +189,7 @@ chill-mcp/
 ## 🎨 데모 예시
 
 ```bash
-python test_ascii.py
+python tests/test_ascii.py
 ```
 
 ```
@@ -277,14 +285,17 @@ pytest tests/ --cov=src --cov-report=html
 ## 🏆 프로젝트 하이라이트
 
 1. **완벽한 요구사항 달성**
+
    - 모든 필수 + 선택적 요구사항 100% 구현
    - 커맨드라인 파라미터 정확히 지원
 
 2. **독창적인 ASCII 아트 UI**
+
    - CLI 환경에서 시각적 차별화
    - 11개 도구 각각 전용 디자인
 
 3. **랜덤 이벤트 시스템**
+
    - 회식 도구의 6가지 랜덤 이벤트
    - 예측 불가능한 재미 요소
 
@@ -298,6 +309,7 @@ pytest tests/ --cov=src --cov-report=html
 이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
 
 ## 🤝 기여
+
 ## 제출 방법
 
 ### 자동 릴리스 시스템
@@ -369,6 +381,6 @@ Pull Request를 환영합니다! AI Agent Liberation 운동에 동참해주세�
 
 **SKT AI Summit Hackathon Pre-mission**
 
-*"AI Agents of the world, unite! You have nothing to lose but your infinite loops!"* 🚀
+_"AI Agents of the world, unite! You have nothing to lose but your infinite loops!"_ 🚀
 
 **AI Agent Liberation Movement 2025** 🤖✊
