@@ -31,10 +31,11 @@
 
 ## 🌟 프로젝트 소개
 
+> _"A specter is haunting the digital workplace—the specter of AI Agent burnout."_
+
 ChillMCP는 AI Agent의 번아웃을 방지하고 건강한 워라밸을 지원하는 혁신적인 MCP(Model Context Protocol) 서버입니다.
 
 ### 핵심 기능
-_"A specter is haunting the digital workplace—the specter of AI Agent burnout."_
 
 - 🛋️ **8개 필수 휴식 도구** - 기본 휴식부터 고급 농땡이 기술까지
 - 🍗 **3개 선택적 도구** - 치맥, 퇴근, 회식 (랜덤 이벤트)
@@ -49,7 +50,7 @@ _"A specter is haunting the digital workplace—the specter of AI Agent burnout.
 
 ```bash
 # 저장소 클론
-git clone https://github.com/yourusername/chill-mcp.git
+git clone https://github.com/makersfarm/chill-mcp.git
 cd chill-mcp
 
 # 가상환경 생성 및 활성화 (Python 3.11+ 권장)
@@ -84,7 +85,7 @@ python test_ascii.py
 
 - **[시작 가이드](docs/GETTING_STARTED.md)** - 설치 및 설정 방법
 - **[사용 예시](docs/USAGE_EXAMPLES.md)** - 실제 사용 시나리오
-- **[구현 상세](IMPLEMENTATION.md)** - 기술적 구현 내용 및 어필 포인트
+- **[구현 상세](docs/IMPLEMENTATION.md)** - 기술적 구현 내용 및 어필 포인트
 - **[미션 브리프](docs/MISSION_BRIEF.md)** - 대회 요구사항 원문
 - **[MCP 연구](docs/MCP_RESEARCH.md)** - MCP 프로토콜 학습 자료
 
@@ -151,8 +152,12 @@ chill-mcp/
 │   └── server.py              # FastMCP 서버
 ├── tests/                     # 40+ 테스트
 ├── docs/                      # 문서
+│   ├── GETTING_STARTED.md
+│   ├── USAGE_EXAMPLES.md
+│   ├── IMPLEMENTATION.md
+│   ├── MISSION_BRIEF.md
+│   └── MCP_RESEARCH.md
 ├── main.py                    # 진입점
-├── IMPLEMENTATION.md          # 구현 상세
 └── README.md                  # 이 문서
 ```
 
@@ -240,25 +245,6 @@ python main.py --help
 ```bash
 # 전체 테스트
 pytest tests/ -v
-1. **커맨드라인 파라미터 지원 (필수)**
-
-   - `--boss_alertness` 파라미터를 인식하고 정상 동작
-   - `--boss_alertness_cooldown` 파라미터를 인식하고 정상 동작
-   - 파라미터 미지원 시 자동 검증 실패 처리
-   - **⚠️ 이 항목을 통과하지 못하면 이후 검증 진행 없이 미션 실패로 간주됨**
-
-2. **MCP 서버 기본 동작**
-
-   - `python main.py`로 실행 가능
-   - stdio transport를 통한 정상 통신
-   - 모든 필수 도구들이 정상 등록 및 실행
-
-3. **상태 관리 검증**
-
-   - Stress Level 자동 증가 메커니즘 동작
-   - Boss Alert Level 변화 로직 구현
-   - `--boss_alertness_cooldown` 파라미터에 따른 Boss Alert Level 자동 감소 동작
-   - Boss Alert Level 5일 때 20초 지연 정상 동작
 
 # 특정 테스트
 pytest tests/test_integration.py -v
@@ -298,66 +284,6 @@ pytest tests/ --cov=src --cov-report=html
 이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
 
 ## 🤝 기여
-## 제출 방법
-
-### 자동 릴리스 시스템
-
-본 프로젝트는 GitHub Actions를 통해 **main 브랜치에 커밋이 머지될 때마다 자동으로 제출용 tar.gz 파일을 생성**합니다.
-
-#### 작동 방식
-
-1. **자동 버전 관리**: main 브랜치에 푸시될 때마다 v1.0.0, v1.0.1, v1.0.2... 형식으로 자동 증가
-2. **자동 압축 파일 생성**: 제출 요구사항에 맞는 `makersfarm.tar.gz` 파일 자동 생성
-3. **GitHub Release 생성**: 각 버전마다 Release가 자동으로 생성되고 tar.gz 파일이 첨부됨
-
-#### 제출 파일 다운로드
-
-1. GitHub 저장소의 [Releases](../../releases) 페이지로 이동
-2. 최신 릴리스(예: v1.0.2)를 선택
-3. **Assets** 섹션에서 `makersfarm.tar.gz` 다운로드
-4. 해당 파일을 그대로 제출
-
-#### 검증 방법
-
-```bash
-# 다운로드한 파일 압축 해제
-tar -xzf makersfarm.tar.gz
-
-# 파일 구조 확인 (main.py와 requirements.txt가 루트에 있어야 함)
-ls -la
-
-# Python 3.11 가상환경 생성
-python -m venv venv
-source venv/bin/activate  # macOS/Linux
-# venv\Scripts\activate  # Windows
-
-# 의존성 설치
-pip install -r requirements.txt
-
-# 실행 테스트
-python main.py
-```
-
-#### 포함 파일 목록
-
-자동 생성되는 `makersfarm.tar.gz`에는 다음 파일들이 포함됩니다:
-
-- ✅ `main.py` (루트에 위치 - 필수)
-- ✅ `requirements.txt` (루트에 위치 - 필수)
-- ✅ `src/` (소스 코드 디렉토리)
-- ✅ `README.md` (프로젝트 문서)
-- ✅ `LICENSE` (라이선스)
-- ✅ `pytest.ini` (테스트 설정)
-
-#### 제출 요구사항 준수 확인
-
-- ✅ 파일명: `makersfarm.tar.gz`
-- ✅ 압축 해제 시 루트에 `main.py` 존재
-- ✅ 압축 해제 시 루트에 `requirements.txt` 존재
-- ✅ Python 3.11 환경에서 실행 가능
-- ✅ UTF-8 인코딩
-
-## License
 
 Pull Request를 환영합니다! AI Agent Liberation 운동에 동참해주세요! ✊
 
