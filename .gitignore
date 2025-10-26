@@ -43,6 +43,9 @@ TestResults.xml
 .env
 .env.local
 
+# ChillMCP state file (user-specific)
+.chillmcp_state.json
+
 # OS
 .DS_Store
 Thumbs.db
