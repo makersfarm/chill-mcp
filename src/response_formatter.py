@@ -152,12 +152,16 @@ def _get_boss_warning_message(old_level: int, new_level: int) -> str:
     Get boss warning message if boss alert increased to threshold levels.
 
     Args:
-        old_level: Previous boss alert level.
-        new_level: Current boss alert level.
+        old_level: Previous boss alert level (0-5).
+        new_level: Current boss alert level (0-5).
 
     Returns:
         str: Warning message if threshold reached, empty string otherwise.
     """
+    # Validate and clamp input values to valid range
+    old_level = max(0, min(5, old_level))
+    new_level = max(0, min(5, new_level))
+
     # Only show warning if boss alert increased
     if new_level <= old_level:
         return ""
