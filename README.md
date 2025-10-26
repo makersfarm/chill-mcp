@@ -122,7 +122,7 @@ ChillMCP를 Claude Desktop에서 사용하려면:
     "chillmcp": {
       "command": "python",
       "args": [
-        "C:/path/to/chill-mcp/main.py"
+        "<path-to-your-project>/main.py"
       ]
     }
   }
