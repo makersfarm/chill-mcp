@@ -190,7 +190,8 @@ async def test_boss_alert_increase_100_percent(state_manager):
     # Try multiple times
     increased_count = 0
     for _ in range(5):
-        if await state_manager.increase_boss_alert():
+        boss_increased, old_level = await state_manager.increase_boss_alert()
+        if boss_increased:
             increased_count += 1
 
     assert increased_count == 5, f"Expected 5 increases with 100% alertness, got {increased_count}"
