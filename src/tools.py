@@ -4,7 +4,7 @@ import asyncio
 import random
 from typing import List
 
-from . import ascii_art
+from . import ascii_art, statistics
 from .response_formatter import format_response
 from .state_manager import StateManager
 
@@ -96,6 +96,10 @@ async def execute_break_tool(
 
     # Potentially increase boss alert
     boss_increased, old_boss_level = await state_manager.increase_boss_alert()
+    boss_alert_change = 1 if boss_increased else 0
+
+    # Save history
+    state_manager.add_history_event(tool_name, -stress_decrease, boss_alert_change)
 
     # Get current state
     state = await state_manager.get_state()
@@ -284,6 +288,9 @@ async def chimaek(state_manager: StateManager) -> str:
     boss_increase = random.randint(2, 3)
     await state_manager.change_boss_alert(boss_increase)
 
+    # Save history
+    state_manager.add_history_event("chimaek", -stress_relief, boss_increase)
+
     # Get updated state
     state = await state_manager.get_state()
 
@@ -309,8 +316,16 @@ async def leave_work(state_manager: StateManager) -> str:
     Returns:
         str: Formatted response.
     """
+    # Save current levels before reset for history
+    current_state = await state_manager.get_state()
+    stress_before = current_state["stress_level"]
+    boss_before = current_state["boss_alert_level"]
+
     # 퇴근하면 모든 스트레스와 Boss Alert 리셋!
     await state_manager.reset()
+
+    # Save history (negative values mean decrease)
+    state_manager.add_history_event("leave_work", -stress_before, -boss_before)
 
     # Get state
     state = await state_manager.get_state()
@@ -359,12 +374,16 @@ async def company_dinner(state_manager: StateManager) -> str:
         await state_manager.increase_stress(amount=stress_change)
 
     # Boss alert changes slightly
+    boss_alert_change = -1 if is_positive else 1
     if is_positive:
         # Positive event: boss alert decreases a bit
         await state_manager.change_boss_alert(-1)
     else:
         # Negative event: boss alert increases
         await state_manager.change_boss_alert(1)
+
+    # Save history (use negative stress_change for decrease)
+    state_manager.add_history_event("company_dinner", -stress_change if stress_change < 0 else stress_change, boss_alert_change)
 
     # Get state
     state = await state_manager.get_state()
@@ -378,6 +397,45 @@ async def company_dinner(state_manager: StateManager) -> str:
         stress_level=state["stress_level"],
         boss_alert_level=state["boss_alert_level"],
         custom_ascii_art=custom_art
+    )
+
+
+async def generate_report(state_manager: StateManager) -> str:
+    """
+    Generate a report of break statistics.
+
+    Args:
+        state_manager: The state manager instance.
+
+    Returns:
+        str: Formatted response with statistics.
+    """
+    stats = statistics.get_break_statistics()
+
+    if "error" in stats:
+        return format_response(
+            break_summary=stats["error"],
+            stress_level=(await state_manager.get_state())["stress_level"],
+            boss_alert_level=(await state_manager.get_state())["boss_alert_level"],
+            tool_name="generate_report"
+        )
+
+    report = f"""**Breakdown of Your Break Habits**
+
+    - **Total Breaks Taken:** {stats["total_breaks"]}
+    - **Favorite Break Tool:** {stats["most_common_tool"]}
+    - **Busiest Break Time:** {stats["most_common_hour"]}
+
+    **Breaks by Tool:**
+    """
+    for tool, count in stats["breaks_by_tool"].items():
+        report += f"- {tool}: {count}\n"
+
+    return format_response(
+        break_summary=report,
+        stress_level=(await state_manager.get_state())["stress_level"],
+        boss_alert_level=(await state_manager.get_state())["boss_alert_level"],
+        tool_name="generate_report"
     )
 
 

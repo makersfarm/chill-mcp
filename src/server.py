@@ -90,6 +90,11 @@ def create_server(config: Config) -> FastMCP:
         return await tools.company_dinner(state_manager)
 
     @mcp.tool()
+    async def generate_report() -> str:
+        """Generate a report of your break-taking habits."""
+        return await tools.generate_report(state_manager)
+
+    @mcp.tool()
     async def snack_time() -> str:
         """Take a snack break at the convenience store! Get some treats to boost your mood."""
         return await tools.snack_time(state_manager)
