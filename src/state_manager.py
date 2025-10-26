@@ -16,6 +16,7 @@ class StateManager:
 
     # State file path (in project root)
     STATE_FILE = Path(__file__).parent.parent / ".chillmcp_state.json"
+    HISTORY_FILE = Path(__file__).parent.parent / ".chillmcp_history.json"
 
     def __init__(self, config: Config):
         """
@@ -262,4 +263,25 @@ class StateManager:
         except Exception as e:
             # Fail silently - if file doesn't exist or is corrupted, start fresh
             self._loading = False
+            pass
+
+    def _save_history(self, tool_name: str, stress_change: int, boss_alert_change: int) -> None:
+        """Save a break event to the history file."""
+        try:
+            history = []
+            if self.HISTORY_FILE.exists():
+                with open(self.HISTORY_FILE, 'r') as f:
+                    history = json.load(f)
+
+            history.append({
+                "tool_name": tool_name,
+                "timestamp": time.time(),
+                "stress_change": stress_change,
+                "boss_alert_change": boss_alert_change,
+            })
+
+            with open(self.HISTORY_FILE, 'w') as f:
+                json.dump(history, f, indent=2)
+        except Exception as e:
+            # Fail silently
             pass
