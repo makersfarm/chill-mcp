@@ -1,0 +1,20 @@
+{
+  "servers": {
+    "chill-mcp": {
+      "type": "stdio",
+      "command": ".\\venv\\Scripts\\python.exe",
+      "args": [".\\main.py"]
+    },
+    "chill-mcp-test": {
+      "type": "stdio",
+      "command": ".\\venv\\Scripts\\python.exe",
+      "args": [
+        ".\\main.py",
+        "--boss_alertness",
+        "80",
+        "--boss_alertness_cooldown",
+        "60"
+      ]
+    }
+  }
+}

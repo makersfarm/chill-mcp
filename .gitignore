@@ -56,3 +56,6 @@ Thumbs.db
 rad.json
 *.g.xlf
 *.flf
+
+# mcp setting in vscode
+!.vscode/mcp.json
