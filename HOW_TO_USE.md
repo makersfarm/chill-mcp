@@ -39,7 +39,7 @@ Windows에서 설정 파일 위치:
     "chillmcp": {
       "command": "python",
       "args": [
-        "C:/Users/YJL/Desktop/chill-mcp/main.py",
+        "<프로젝트-경로>/main.py",
         "--boss_alertness", "50",
         "--boss_alertness_cooldown", "300"
       ]
@@ -278,7 +278,7 @@ for i in range(10):
     "chillmcp": {
       "command": "python",
       "args": [
-        "C:/Users/YJL/Desktop/chill-mcp/main.py"
+        "<프로젝트-경로>/main.py"
       ],
       "env": {
         "PYTHONIOENCODING": "utf-8"

@@ -4,6 +4,7 @@ import asyncio
 import random
 from typing import List
 
+from . import ascii_art
 from .response_formatter import format_response
 from .state_manager import StateManager
 
@@ -322,7 +323,6 @@ async def company_dinner(state_manager: StateManager) -> str:
     # Random event: 50% chance of positive or negative
     is_positive = random.random() < 0.5
 
-    from . import ascii_art
     event = ascii_art.get_random_dinner_event(positive=is_positive)
 
     # Apply stress change
@@ -347,12 +347,14 @@ async def company_dinner(state_manager: StateManager) -> str:
     # Get state
     state = await state_manager.get_state()
 
-    # Custom response with event art
-    response = event["art"] + "\n"
-    response += ascii_art.create_status_dashboard(state["stress_level"], state["boss_alert_level"]) + "\n"
-    response += f"{event['message']}\n\n"
-    response += f"Break Summary: {event['title']} - {event['message']}\n"
-    response += f"Stress Level: {state['stress_level']}\n"
-    response += f"Boss Alert Level: {state['boss_alert_level']}"
+    # Build custom ASCII art with event
+    custom_art = event["art"] + "\n"
+    custom_art += ascii_art.create_status_dashboard(state["stress_level"], state["boss_alert_level"])
 
-    return response
+    # Use format_response for consistency
+    return format_response(
+        break_summary=f"{event['title']} - {event['message']}",
+        stress_level=state["stress_level"],
+        boss_alert_level=state["boss_alert_level"],
+        custom_ascii_art=custom_art
+    )

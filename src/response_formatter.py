@@ -8,7 +8,8 @@ def format_response(
     stress_level: int,
     boss_alert_level: int,
     tool_name: str = None,
-    show_ascii_art: bool = True
+    show_ascii_art: bool = True,
+    custom_ascii_art: str = None
 ) -> str:
     """
     Format a standard response for break tools with optional ASCII art.
@@ -31,18 +32,22 @@ def format_response(
 
     # Build ASCII art section if enabled
     ascii_section = ""
-    if show_ascii_art and tool_name:
-        tool_art = ascii_art.get_tool_ascii_art(tool_name)
-        if tool_art:
-            ascii_section += tool_art + "\n"
 
-    if show_ascii_art:
+    # Use custom ASCII art if provided, otherwise use default
+    if show_ascii_art and custom_ascii_art:
+        ascii_section = custom_ascii_art
+    elif show_ascii_art:
+        if tool_name:
+            tool_art = ascii_art.get_tool_ascii_art(tool_name)
+            if tool_art:
+                ascii_section += tool_art + "\n"
+
         dashboard = ascii_art.create_status_dashboard(stress_level, boss_alert_level)
         ascii_section += dashboard + "\n"
 
-    if show_ascii_art and boss_alert_level >= 3:
-        boss_art = ascii_art.get_boss_state_art(boss_alert_level)
-        ascii_section += boss_art + "\n"
+        if boss_alert_level >= 3:
+            boss_art = ascii_art.get_boss_state_art(boss_alert_level)
+            ascii_section += boss_art + "\n"
 
     # Create user-friendly message
     stress_emoji = _get_stress_emoji(stress_level)
@@ -53,8 +58,8 @@ def format_response(
 {break_summary}
 
 📊 **현재 상태:**
-{stress_emoji} Stress Level: {stress_level}% {'[' + '█' * (stress_level // 10) + '░' * (10 - stress_level // 10) + ']'}
-{boss_emoji} Boss Alert: {boss_alert_level}/5 {'[' + '█' * boss_alert_level + '░' * (5 - boss_alert_level) + ']'}
+{stress_emoji} Stress Level: {stress_level}% {_create_progress_bar(stress_level, 100, 10)}
+{boss_emoji} Boss Alert: {boss_alert_level}/5 {_create_progress_bar(boss_alert_level, 5, 5)}
 
 """
 
@@ -78,6 +83,23 @@ Boss Alert Level: {boss_alert_level}
 """
 
     return response
+
+
+def _create_progress_bar(value: int, max_value: int, length: int = 10) -> str:
+    """
+    Create a text-based progress bar.
+
+    Args:
+        value: Current value.
+        max_value: Maximum value.
+        length: Length of the progress bar.
+
+    Returns:
+        str: Progress bar string.
+    """
+    filled = int((value / max_value) * length)
+    empty = length - filled
+    return '[' + '█' * filled + '░' * empty + ']'
 
 
 def _get_stress_emoji(stress_level: int) -> str:
