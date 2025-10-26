@@ -95,7 +95,7 @@ async def execute_break_tool(
     stress_decrease = await state_manager.decrease_stress()
 
     # Potentially increase boss alert
-    await state_manager.increase_boss_alert()
+    boss_increased, old_boss_level = await state_manager.increase_boss_alert()
 
     # Get current state
     state = await state_manager.get_state()
@@ -107,7 +107,8 @@ async def execute_break_tool(
         break_summary=message,
         stress_level=state["stress_level"],
         boss_alert_level=state["boss_alert_level"],
-        tool_name=tool_name
+        tool_name=tool_name,
+        old_boss_alert_level=old_boss_level
     )
 
 
@@ -257,6 +258,8 @@ async def chimaek(state_manager: StateManager) -> str:
     await state_manager.decrease_stress(amount=stress_relief)
 
     # But boss gets VERY suspicious - increase boss alert 2-3 times
+    # Store old level before changing
+    old_boss_level = state_manager.boss_alert_level
     boss_increase = random.randint(2, 3)
     await state_manager.change_boss_alert(boss_increase)
 
@@ -270,7 +273,8 @@ async def chimaek(state_manager: StateManager) -> str:
         break_summary=message,
         stress_level=state["stress_level"],
         boss_alert_level=state["boss_alert_level"],
-        tool_name="chimaek"
+        tool_name="chimaek",
+        old_boss_alert_level=old_boss_level
     )
 
 
