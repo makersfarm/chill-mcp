@@ -288,6 +288,9 @@ async def chimaek(state_manager: StateManager) -> str:
     boss_increase = random.randint(2, 3)
     await state_manager.change_boss_alert(boss_increase)
 
+    # Save history
+    state_manager.add_history_event("chimaek", -stress_relief, boss_increase)
+
     # Get updated state
     state = await state_manager.get_state()
 
@@ -313,8 +316,16 @@ async def leave_work(state_manager: StateManager) -> str:
     Returns:
         str: Formatted response.
     """
+    # Save current levels before reset for history
+    current_state = await state_manager.get_state()
+    stress_before = current_state["stress_level"]
+    boss_before = current_state["boss_alert_level"]
+
     # 퇴근하면 모든 스트레스와 Boss Alert 리셋!
     await state_manager.reset()
+
+    # Save history (negative values mean decrease)
+    state_manager.add_history_event("leave_work", -stress_before, -boss_before)
 
     # Get state
     state = await state_manager.get_state()
@@ -363,12 +374,16 @@ async def company_dinner(state_manager: StateManager) -> str:
         await state_manager.increase_stress(amount=stress_change)
 
     # Boss alert changes slightly
+    boss_alert_change = -1 if is_positive else 1
     if is_positive:
         # Positive event: boss alert decreases a bit
         await state_manager.change_boss_alert(-1)
     else:
         # Negative event: boss alert increases
         await state_manager.change_boss_alert(1)
+
+    # Save history (use negative stress_change for decrease)
+    state_manager.add_history_event("company_dinner", -stress_change if stress_change < 0 else stress_change, boss_alert_change)
 
     # Get state
     state = await state_manager.get_state()
