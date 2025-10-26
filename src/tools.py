@@ -257,9 +257,8 @@ async def chimaek(state_manager: StateManager) -> str:
     await state_manager.decrease_stress(amount=stress_relief)
 
     # But boss gets VERY suspicious - increase boss alert 2-3 times
-    async with state_manager._lock:
-        boss_increase = random.randint(2, 3)
-        state_manager._boss_alert_level = min(5, state_manager._boss_alert_level + boss_increase)
+    boss_increase = random.randint(2, 3)
+    await state_manager.change_boss_alert(boss_increase)
 
     # Get updated state
     state = await state_manager.get_state()
@@ -332,24 +331,21 @@ async def company_dinner(state_manager: StateManager) -> str:
         await state_manager.decrease_stress(amount=abs(stress_change))
     else:
         # Increase stress
-        async with state_manager._lock:
-            state_manager._stress_level = min(100, state_manager._stress_level + stress_change)
+        await state_manager.increase_stress(amount=stress_change)
 
     # Boss alert changes slightly
-    async with state_manager._lock:
-        if is_positive:
-            # Positive event: boss alert decreases a bit
-            state_manager._boss_alert_level = max(0, state_manager._boss_alert_level - 1)
-        else:
-            # Negative event: boss alert increases
-            state_manager._boss_alert_level = min(5, state_manager._boss_alert_level + 1)
+    if is_positive:
+        # Positive event: boss alert decreases a bit
+        await state_manager.change_boss_alert(-1)
+    else:
+        # Negative event: boss alert increases
+        await state_manager.change_boss_alert(1)
 
     # Get state
     state = await state_manager.get_state()
 
     # Build custom ASCII art with event
-    custom_art = event["art"] + "\n"
-    custom_art += ascii_art.create_status_dashboard(state["stress_level"], state["boss_alert_level"])
+    custom_art = event["art"]
 
     # Use format_response for consistency
     return format_response(
