@@ -99,7 +99,7 @@ async def execute_break_tool(
     boss_alert_change = 1 if boss_alert_increased else 0
 
     # Save history
-    state_manager._save_history(tool_name, -stress_decrease, boss_alert_change)
+    state_manager.add_history_event(tool_name, -stress_decrease, boss_alert_change)
 
     # Get current state
     state = await state_manager.get_state()

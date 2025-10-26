@@ -16,7 +16,6 @@ class StateManager:
 
     # State file path (in project root)
     STATE_FILE = Path(__file__).parent.parent / ".chillmcp_state.json"
-    HISTORY_FILE = Path(__file__).parent.parent / ".chillmcp_history.json"
 
     def __init__(self, config: Config):
         """
@@ -29,6 +28,7 @@ class StateManager:
         # Use double underscore for true private variables
         self.__stress_level: int = 0  # 0-100
         self.__boss_alert_level: int = 0  # 0-5
+        self.history: list = []
         self._last_stress_update: float = time.time()
         self._last_boss_cooldown: float = time.time()
         self._lock = asyncio.Lock()
@@ -231,7 +231,8 @@ class StateManager:
         try:
             state_data = {
                 "stress_level": self._stress_level,
-                "boss_alert_level": self._boss_alert_level
+                "boss_alert_level": self._boss_alert_level,
+                "history": self.history,
             }
             with open(self.STATE_FILE, 'w') as f:
                 json.dump(state_data, f, indent=2)
@@ -253,6 +254,7 @@ class StateManager:
                 # Setter is called but won't save because _loading is True
                 self._stress_level = state_data.get("stress_level", 0)
                 self._boss_alert_level = state_data.get("boss_alert_level", 0)
+                self.history = state_data.get("history", [])
 
                 # Reset timestamps to current time (don't accumulate time while server was off)
                 self._last_stress_update = time.time()
@@ -265,23 +267,12 @@ class StateManager:
             self._loading = False
             pass
 
-    def _save_history(self, tool_name: str, stress_change: int, boss_alert_change: int) -> None:
-        """Save a break event to the history file."""
-        try:
-            history = []
-            if self.HISTORY_FILE.exists():
-                with open(self.HISTORY_FILE, 'r') as f:
-                    history = json.load(f)
-
-            history.append({
-                "tool_name": tool_name,
-                "timestamp": time.time(),
-                "stress_change": stress_change,
-                "boss_alert_change": boss_alert_change,
-            })
-
-            with open(self.HISTORY_FILE, 'w') as f:
-                json.dump(history, f, indent=2)
-        except Exception as e:
-            # Fail silently
-            pass
+    def add_history_event(self, tool_name: str, stress_change: int, boss_alert_change: int) -> None:
+        """Add a break event to the history and save the state."""
+        self.history.append({
+            "tool_name": tool_name,
+            "timestamp": time.time(),
+            "stress_change": stress_change,
+            "boss_alert_change": boss_alert_change,
+        })
+        self._save_state()

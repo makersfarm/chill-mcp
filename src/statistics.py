@@ -5,8 +5,8 @@ from pathlib import Path
 from collections import Counter
 from datetime import datetime
 
-# History file path (in project root)
-HISTORY_FILE = Path(__file__).parent.parent / ".chillmcp_history.json"
+# State file path (in project root)
+STATE_FILE = Path(__file__).parent.parent / ".chillmcp_state.json"
 
 def get_break_statistics() -> dict:
     """
@@ -15,11 +15,12 @@ def get_break_statistics() -> dict:
     Returns:
         dict: A dictionary containing break statistics.
     """
-    if not HISTORY_FILE.exists():
+    if not STATE_FILE.exists():
         return {"error": "No break history found."}
 
-    with open(HISTORY_FILE, 'r') as f:
-        history = json.load(f)
+    with open(STATE_FILE, 'r') as f:
+        data = json.load(f)
+        history = data.get("history", [])
 
     if not history:
         return {"error": "Break history is empty."}
