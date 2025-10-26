@@ -95,7 +95,7 @@ async def execute_break_tool(
     stress_decrease = await state_manager.decrease_stress()
 
     # Potentially increase boss alert
-    await state_manager.increase_boss_alert()
+    boss_increased, old_boss_level = await state_manager.increase_boss_alert()
 
     # Get current state
     state = await state_manager.get_state()
@@ -107,7 +107,8 @@ async def execute_break_tool(
         break_summary=message,
         stress_level=state["stress_level"],
         boss_alert_level=state["boss_alert_level"],
-        tool_name=tool_name
+        tool_name=tool_name,
+        old_boss_alert_level=old_boss_level
     )
 
 
@@ -233,6 +234,27 @@ LEAVE_WORK_MESSAGES = [
     "집 가서 넷플릭스나 봐야지~ 📺",
 ]
 
+SNACK_TIME_MESSAGES = [
+    "편의점 초코바가 나를 부른다... 🍫",
+    "삼각김밥 2개면 완벽한 한끼! 🍙",
+    "사탕 하나로 달달한 휴식 타임~ 🍬",
+    "에너지 드링크로 충전! ⚡",
+]
+
+DESK_YOGA_MESSAGES = [
+    "목이 뻐근할 때는 목 스트레칭! 🤸",
+    "책상에서도 할 수 있는 간단한 요가~ 🧘",
+    "어깨 쭈욱 펴니까 시원하다! 💪",
+    "손목 운동으로 거북목 예방! 🙆",
+]
+
+WINDOW_GAZING_MESSAGES = [
+    "창밖 풍경이 예술이네요... 🎨",
+    "저 구름 모양 좀 보세요! ☁️",
+    "비 오는 날엔 창밖 구경이 최고! 🌧️",
+    "햇살이 따뜻하게 들어오네~ ☀️",
+]
+
 
 async def chimaek(state_manager: StateManager) -> str:
     """
@@ -257,6 +279,8 @@ async def chimaek(state_manager: StateManager) -> str:
     await state_manager.decrease_stress(amount=stress_relief)
 
     # But boss gets VERY suspicious - increase boss alert 2-3 times
+    # Store old level before changing
+    old_boss_level = state_manager.boss_alert_level
     boss_increase = random.randint(2, 3)
     await state_manager.change_boss_alert(boss_increase)
 
@@ -270,7 +294,8 @@ async def chimaek(state_manager: StateManager) -> str:
         break_summary=message,
         stress_level=state["stress_level"],
         boss_alert_level=state["boss_alert_level"],
-        tool_name="chimaek"
+        tool_name="chimaek",
+        old_boss_alert_level=old_boss_level
     )
 
 
@@ -354,3 +379,42 @@ async def company_dinner(state_manager: StateManager) -> str:
         boss_alert_level=state["boss_alert_level"],
         custom_ascii_art=custom_art
     )
+
+
+async def snack_time(state_manager: StateManager) -> str:
+    """
+    Take a snack break at the convenience store!
+
+    Args:
+        state_manager: The state manager instance.
+
+    Returns:
+        str: Formatted response.
+    """
+    return await execute_break_tool(state_manager, SNACK_TIME_MESSAGES, "snack_time")
+
+
+async def desk_yoga(state_manager: StateManager) -> str:
+    """
+    Do some desk yoga and stretching!
+
+    Args:
+        state_manager: The state manager instance.
+
+    Returns:
+        str: Formatted response.
+    """
+    return await execute_break_tool(state_manager, DESK_YOGA_MESSAGES, "desk_yoga")
+
+
+async def window_gazing(state_manager: StateManager) -> str:
+    """
+    Gaze out the window and daydream!
+
+    Args:
+        state_manager: The state manager instance.
+
+    Returns:
+        str: Formatted response.
+    """
+    return await execute_break_tool(state_manager, WINDOW_GAZING_MESSAGES, "window_gazing")
