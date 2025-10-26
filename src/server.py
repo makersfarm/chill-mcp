@@ -5,6 +5,8 @@ from fastmcp import FastMCP
 from .config import Config
 from .state_manager import StateManager
 from . import tools
+from . import ascii_art
+from .response_formatter import format_response
 
 
 def create_server(config: Config) -> FastMCP:
@@ -69,8 +71,6 @@ def create_server(config: Config) -> FastMCP:
     @mcp.tool()
     async def check_status() -> str:
         """Check current stress and boss alert levels."""
-        from .response_formatter import format_response
-
         state = await state_manager.get_state()
 
         # Special handling for strike status (Stress = 100)
@@ -79,7 +79,8 @@ def create_server(config: Config) -> FastMCP:
                 break_summary="🚨 AI Agent 파업 상태! 모든 작업이 중단될 위험! 즉시 휴식을 취하세요!",
                 stress_level=state['stress_level'],
                 boss_alert_level=state['boss_alert_level'],
-                tool_name=None  # No tool art, only strike art
+                tool_name=None,  # No tool art, only strike art
+                custom_ascii_art=ascii_art.STRIKE_ART
             )
 
         # Normal status check

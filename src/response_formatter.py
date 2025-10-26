@@ -35,8 +35,12 @@ def format_response(
     # Build ASCII art section if enabled
     ascii_section = ""
 
+    # Special handling for strike status (Stress = 100)
+    # This takes precedence over all other ASCII art
+    if show_ascii_art and stress_level == 100:
+        ascii_section = ascii_art.STRIKE_ART + "\n\n"
     # Use custom ASCII art if provided, otherwise use default
-    if show_ascii_art and custom_ascii_art:
+    elif show_ascii_art and custom_ascii_art:
         ascii_section = custom_ascii_art
     elif show_ascii_art:
         if tool_name:
@@ -58,7 +62,13 @@ def format_response(
     if old_boss_alert_level is not None:
         boss_warning = _get_boss_warning_message(old_boss_alert_level, boss_alert_level)
 
-    response = f"""🎨 **AI Agent 상태 업데이트!**
+    # Use special header for strike status
+    if stress_level == 100:
+        header = "🚨 **긴급! AI Agent 파업 중!** 🚨"
+    else:
+        header = "🎨 **AI Agent 상태 업데이트!**"
+
+    response = f"""{header}
 
 {break_summary}
 """
