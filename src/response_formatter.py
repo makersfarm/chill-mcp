@@ -77,7 +77,11 @@ def format_response(
     # Add ASCII art instruction for Claude
     if ascii_section:
         response += f"""
-🖼️ **ASCII 아트 (사용자에게 코드 블록으로 보여주세요!):**
+---
+
+🎨 **IMPORTANT: Display this ASCII art to the user in a code block!**
+
+사용자에게 아래 ASCII 아트를 반드시 코드 블록으로 표시해주세요:
 
 ```
 {ascii_section.strip()}
