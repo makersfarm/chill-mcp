@@ -140,7 +140,7 @@ class StateManager:
         async with self._lock:
             amount = max(1, min(100, amount))
             old_level = self._stress_level
-            self._stress_level = min(100, self._stress_level + amount)
+            self._stress_level += amount
             return self._stress_level - old_level
 
     async def increase_boss_alert(self) -> tuple[bool, int]:
