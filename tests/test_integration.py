@@ -192,7 +192,8 @@ async def test_boss_alertness_probability():
 
     increased_count = 0
     for _ in range(10):
-        if await state_manager_high.increase_boss_alert():
+        boss_increased, old_level = await state_manager_high.increase_boss_alert()
+        if boss_increased:
             increased_count += 1
         if state_manager_high.boss_alert_level >= 5:
             break
@@ -205,7 +206,8 @@ async def test_boss_alertness_probability():
 
     increased_count = 0
     for _ in range(10):
-        if await state_manager_low.increase_boss_alert():
+        boss_increased, old_level = await state_manager_low.increase_boss_alert()
+        if boss_increased:
             increased_count += 1
 
     assert increased_count == 0, "With 0% alertness, boss alert should never increase"
