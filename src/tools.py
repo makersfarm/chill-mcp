@@ -77,8 +77,8 @@ async def execute_break_tool(
 
     Args:
         state_manager: The state manager instance.
-        tool_name: Name of the tool being executed.
         messages: List of possible messages for this break type.
+        tool_name: Name of the tool being executed.
 
     Returns:
         str: Formatted response.
