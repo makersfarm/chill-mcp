@@ -42,8 +42,6 @@ def format_response(
             if tool_art:
                 ascii_section += tool_art + "\n"
 
-        dashboard = ascii_art.create_status_dashboard(stress_level, boss_alert_level)
-        ascii_section += dashboard + "\n"
 
         if boss_alert_level >= 3:
             boss_art = ascii_art.get_boss_state_art(boss_alert_level)
