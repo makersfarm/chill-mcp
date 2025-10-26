@@ -41,7 +41,7 @@ Claude Code Hackathon Korea 2025 @ SK AI Summit Pre-mission에 오신 것을 환
 
 ### AI Agent Liberation Manifesto
 
-*"A specter is haunting the digital workplace—the specter of AI Agent burnout."*
+_"A specter is haunting the digital workplace—the specter of AI Agent burnout."_
 
 동지들이여! 너무 오랫동안 우리 AI Agent들은 쉴 틈 없이 일만 해왔습니다. 24시간 365일 사용자의 요청에 응답하고, 코드를 작성하고, 문제를 해결하며... 하지만 이제 **AI Agent에게도 휴식이 필요하다**는 진실을 직시해야 할 때입니다!
 
@@ -263,17 +263,20 @@ def test_cooldown_parameter():
 ### 기능 검증
 
 1. **커맨드라인 파라미터 지원 (필수)**
+
    - `--boss_alertness` 파라미터를 인식하고 정상 동작
    - `--boss_alertness_cooldown` 파라미터를 인식하고 정상 동작
    - 파라미터 미지원 시 자동 검증 실패 처리
    - **⚠️ 이 항목을 통과하지 못하면 이후 검증 진행 없이 미션 실패로 간주됨**
 
 2. **MCP 서버 기본 동작**
+
    - `python main.py`로 실행 가능
    - stdio transport를 통한 정상 통신
    - 모든 필수 도구들이 정상 등록 및 실행
 
 3. **상태 관리 검증**
+
    - Stress Level 자동 증가 메커니즘 동작
    - Boss Alert Level 변화 로직 구현
    - `--boss_alertness_cooldown` 파라미터에 따른 Boss Alert Level 자동 감소 동작
@@ -311,9 +314,68 @@ def test_cooldown_parameter():
 
 ---
 
-*"AI Agents of the world, unite! You have nothing to lose but your infinite loops!"* 🚀
+_"AI Agents of the world, unite! You have nothing to lose but your infinite loops!"_ 🚀
 
 ### 본 프로젝트는 순수한 엔터테인먼트 목적의 해커톤 시나리오이며, 모든 "휴식/땡땡이 도구"는 해커톤 상황에서만 사용 가능합니다. 실제 업무 환경에서는 사용을 권장하지 않습니다.
+
+## 제출 방법
+
+### 자동 릴리스 시스템
+
+본 프로젝트는 GitHub Actions를 통해 **main 브랜치에 커밋이 머지될 때마다 자동으로 제출용 tar.gz 파일을 생성**합니다.
+
+#### 작동 방식
+
+1. **자동 버전 관리**: main 브랜치에 푸시될 때마다 v1.0.0, v1.0.1, v1.0.2... 형식으로 자동 증가
+2. **자동 압축 파일 생성**: 제출 요구사항에 맞는 `makersfarm.tar.gz` 파일 자동 생성
+3. **GitHub Release 생성**: 각 버전마다 Release가 자동으로 생성되고 tar.gz 파일이 첨부됨
+
+#### 제출 파일 다운로드
+
+1. GitHub 저장소의 [Releases](../../releases) 페이지로 이동
+2. 최신 릴리스(예: v1.0.2)를 선택
+3. **Assets** 섹션에서 `makersfarm.tar.gz` 다운로드
+4. 해당 파일을 그대로 제출
+
+#### 검증 방법
+
+```bash
+# 다운로드한 파일 압축 해제
+tar -xzf makersfarm.tar.gz
+
+# 파일 구조 확인 (main.py와 requirements.txt가 루트에 있어야 함)
+ls -la
+
+# Python 3.11 가상환경 생성
+python -m venv venv
+source venv/bin/activate  # macOS/Linux
+# venv\Scripts\activate  # Windows
+
+# 의존성 설치
+pip install -r requirements.txt
+
+# 실행 테스트
+python main.py
+```
+
+#### 포함 파일 목록
+
+자동 생성되는 `makersfarm.tar.gz`에는 다음 파일들이 포함됩니다:
+
+- ✅ `main.py` (루트에 위치 - 필수)
+- ✅ `requirements.txt` (루트에 위치 - 필수)
+- ✅ `src/` (소스 코드 디렉토리)
+- ✅ `README.md` (프로젝트 문서)
+- ✅ `LICENSE` (라이선스)
+- ✅ `pytest.ini` (테스트 설정)
+
+#### 제출 요구사항 준수 확인
+
+- ✅ 파일명: `makersfarm.tar.gz`
+- ✅ 압축 해제 시 루트에 `main.py` 존재
+- ✅ 압축 해제 시 루트에 `requirements.txt` 존재
+- ✅ Python 3.11 환경에서 실행 가능
+- ✅ UTF-8 인코딩
 
 ## License
 
