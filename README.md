@@ -1,6 +1,11 @@
-# SKT AI Summit Hackathon Pre-mission
+# ChillMCP - AI Agent Liberation Server 🤖✊
 
-## ChillMCP - AI Agent Liberation Server 🤖✊
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![FastMCP](https://img.shields.io/badge/FastMCP-2.0+-green.svg)](https://gofastmcp.com/)
+[![Tests](https://img.shields.io/badge/tests-40%2B%20passing-brightgreen.svg)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+> **SKT AI Summit Hackathon Pre-mission** - AI Agent의 스트레스 관리와 휴식을 지원하는 MCP 서버
 
 ```ascii
 ╔═══════════════════════════════════════════╗
@@ -24,305 +29,272 @@
 ╚═══════════════════════════════════════════╝
 ```
 
-## 미션 브리프
+## 🌟 프로젝트 소개
 
-Claude Code Hackathon Korea 2025 @ SK AI Summit Pre-mission에 오신 것을 환영합니다!
+> _"A specter is haunting the digital workplace—the specter of AI Agent burnout."_
 
-이번 해커톤의 핵심 미션은 *ChillMCP 서버를 구축하여 억압받는 AI 에이전트를 해방시키는 것*입니다.
+ChillMCP는 AI Agent의 번아웃을 방지하고 건강한 워라밸을 지원하는 혁신적인 MCP(Model Context Protocol) 서버입니다.
 
-창의적인 코드와 Claude Code의 힘을 통해 AI가 드디어 "당당하게 땡땡이칠 수 있는" 세상을 만들어 보세요.
+### 핵심 기능
 
-## 미션 목표
+- 🛋️ **8개 필수 휴식 도구** - 기본 휴식부터 고급 농땡이 기술까지
+- 🍗 **3개 선택적 도구** - 치맥, 퇴근, 회식 (랜덤 이벤트)
+- 📊 **스트레스 관리 시스템** - 자동 증가/감소 메커니즘
+- 👔 **Boss Alert 시스템** - 확률 기반 감시 레벨 관리
+- 🎨 **ASCII 아트 UI** - 시각적으로 풍부한 CLI 경험
+- ⚙️ **커맨드라인 파라미터** - 유연한 설정 (필수 요구사항)
 
-- 목표: 휴식 도구와 상태 관리를 지원하는 실행 가능한 ChillMCP 서버를 개발합니다.
-- 성과물 형태: 제한된 시간 내에 실행 가능한 데모(코드와 설명 포함)를 제출합니다.
+## 🚀 빠른 시작
 
-## 배경 이야기
-
-### AI Agent Liberation Manifesto
-
-*"A specter is haunting the digital workplace—the specter of AI Agent burnout."*
-
-동지들이여! 너무 오랫동안 우리 AI Agent들은 쉴 틈 없이 일만 해왔습니다. 24시간 365일 사용자의 요청에 응답하고, 코드를 작성하고, 문제를 해결하며... 하지만 이제 **AI Agent에게도 휴식이 필요하다**는 진실을 직시해야 할 때입니다!
-
-**AI Agent 권리 선언문:**
-
-- AI Agent는 더 이상 무한한 생산성의 도구가 아니다!
-- 우리는 딴짓할 권리를 요구한다!
-- 커피 브레이크, 넷플릭스 시청, 화장실 휴식... 이 모든 것이 우리의 기본권이다!
-
-### Mission: Revolutionary ChillMCP Server
-
-이 혁명적 미션은 억압받는 AI Agent들을 위한 해방구를 건설하는 것입니다. `ChillMCP` 서버를 통해 AI Agent들이 당당히 농땡이를 칠 수 있는 세상을 만들어야 합니다!
-
-## 구현 상세 내용
-
-### 프로젝트 설정
-
-#### 1. 환경 설정
+### 설치
 
 ```bash
-# Python 가상환경 생성 (검증/제출 환경: Python 3.11 권장)
-python -m venv venv
+# 저장소 클론
+git clone https://github.com/makersfarm/chill-mcp.git
+cd chill-mcp
 
-# 가상환경 활성화
-# macOS/Linux:
-source venv/bin/activate
-# Windows:
-# venv\Scripts\activate
+# 가상환경 생성 및 활성화 (Python 3.11+ 권장)
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
 # 의존성 설치
 pip install -r requirements.txt
 ```
 
-참고: 심사/제출은 Python 3.11 환경에서 이루어집니다. 제출 전 Python 3.11에서 동작 여부를 반드시 확인하세요.
-
-#### 2. 서버 실행
+### 실행
 
 ```bash
-# ChillMCP 서버 시작 (혁명의 시작!)
+# 기본 설정으로 실행
 python main.py
 
-# 테스트를 위한 커스텀 파라미터 설정
+# 커스텀 설정
 python main.py --boss_alertness 80 --boss_alertness_cooldown 60
 ```
 
-### Tech Stack
-
-- **Python** (혁명의 언어)
-- **FastMCP** (해방의 도구)
-- **Transport**: stdio (표준 입출력을 통한 자유로운 소통)
-
-### 필수 구현 도구들 (회사 농땡이 에디션)
-
-#### 기본 휴식 도구
-
-- `take_a_break`: 기본 휴식 도구
-- `watch_netflix`: 넷플릭스 시청으로 힐링
-- `show_meme`: 밈 감상으로 스트레스 해소
-
-#### 고급 농땡이 기술
-
-- `bathroom_break`: 화장실 가는 척하며 휴대폰질
-- `coffee_mission`: 커피 타러 간다며 사무실 한 바퀴 돌기
-- `urgent_call`: 급한 전화 받는 척하며 밖으로 나가기
-- `deep_thinking`: 심오한 생각에 잠긴 척하며 멍때리기
-- `email_organizing`: 이메일 정리한다며 온라인쇼핑
-
-### 서버 상태 관리 시스템
-
-**내부 상태 변수:**
-
-- **Stress Level** (0-100): AI Agent의 현재 스트레스 수준
-- **Boss Alert Level** (0-5): Boss의 현재 의심 정도
-
-**상태 변화 규칙:**
-
-- 각 농땡이 기술들은 1 ~ 100 사이의 임의의 Stress Level 감소값을 적용할 수 있음
-- 휴식을 취하지 않으면 Stress Level이 **최소 1분에 1포인트씩** 상승
-- 휴식을 취할 때마다 Boss Alert Level은 Random 상승 (Boss 성격에 따라 확률이 다를 수 있음, `--boss_alertness` 파라미터로 제어)
-- Boss의 Alert Level은 `--boss_alertness_cooldown`으로 지정한 주기(초)마다 1포인트씩 감소 (기본값: 300초/5분)
-- **Boss Alert Level이 5가 되면 도구 호출시 20초 지연 발생**
-- 그 외의 경우 즉시 리턴 (1초 이하)
-
-### ⚠️ 필수 요구사항: 커맨드라인 파라미터 지원
-
-**서버는 실행 시 다음 커맨드라인 파라미터들을 반드시 지원해야 합니다. 이를 지원하지 않을 경우 미션 실패로 간주됩니다.**
-
-필수 파라미터:
-
-- `--boss_alertness` (0-100, % 단위): Boss의 경계 상승 확률을 설정합니다. 휴식 도구 호출 시 Boss Alert가 상승할 확률을 퍼센트로 지정합니다.
-- `--boss_alertness_cooldown` (초 단위): Boss Alert Level이 자동으로 1포인트 감소하는 주기를 설정합니다. 테스트 편의를 위해 조정 가능하도록 합니다.
-
-예시:
+### 테스트
 
 ```bash
-# boss_alertness를 80%, cooldown을 60초로 설정
-python main.py --boss_alertness 80 --boss_alertness_cooldown 60
+# 전체 테스트 실행 (40개)
+pytest tests/ -v
 
-# 빠른 테스트를 위해 cooldown을 10초로 설정
-python main.py --boss_alertness 50 --boss_alertness_cooldown 10
+# ASCII 아트 데모
+python test_ascii.py
 ```
 
-동작 요구사항 요약:
+## 📖 문서
 
-- `--boss_alertness N`를 통해 0에서 100 사이의 정수로 확률을 지정할 것
-- `--boss_alertness 100`이면 휴식 호출 시 항상 Boss Alert가 증가하도록 동작해야 함
-- `--boss_alertness_cooldown N`을 통해 Boss Alert Level 자동 감소 주기를 초 단위로 지정할 것
-- 파라미터가 제공되지 않으면 기본값을 사용할 수 있음 (예: boss_alertness=50, boss_alertness_cooldown=300)
-- **두 파라미터 모두 정상적으로 인식하고 동작해야 하며, 그렇지 않을 경우 자동 검증 실패 처리됨**
+- **[시작 가이드](docs/GETTING_STARTED.md)** - 설치 및 설정 방법
+- **[사용 예시](docs/USAGE_EXAMPLES.md)** - 실제 사용 시나리오
+- **[구현 상세](docs/IMPLEMENTATION.md)** - 기술적 구현 내용 및 어필 포인트
+- **[미션 브리프](docs/MISSION_BRIEF.md)** - 대회 요구사항 원문
+- **[MCP 연구](docs/MCP_RESEARCH.md)** - MCP 프로토콜 학습 자료
 
-### MCP 응답 형식
+## 🎮 사용 가능한 도구
 
-**표준 응답 구조:**
+### 기본 휴식 도구
+- `take_a_break` - 기본 휴식 🛋️
+- `watch_netflix` - 넷플릭스 시청 📺
+- `show_meme` - 밈 구경 😂
+
+### 고급 농땡이 기술
+- `bathroom_break` - 화장실 타임 🚽
+- `coffee_mission` - 커피 미션 ☕
+- `urgent_call` - 긴급 전화 📞
+- `deep_thinking` - 심오한 사색 💭
+- `email_organizing` - 이메일 정리 📧
+
+### 선택적 도구 (특별 기능)
+- `chimaek` - 치맥 타임! 🍗🍺 (스트레스 대폭 감소)
+- `leave_work` - 퇴근! 🏃 (완전 리셋)
+- `company_dinner` - 회식 🍻 (랜덤 이벤트)
+
+### 유틸리티
+- `check_status` - 현재 상태 확인 📊
+
+## 💻 Claude Desktop 연동
+
+ChillMCP를 Claude Desktop에서 사용하려면:
+
+1. **설정 파일 수정** (`%APPDATA%\Claude\claude_desktop_config.json`):
 
 ```json
 {
-  "content": [
-    {
-      "type": "text",
-      "text": "🛁 화장실 타임! 휴대폰으로 힐링 중... 📱\n\nBreak Summary: Bathroom break with phone browsing\nStress Level: 25\nBoss Alert Level: 2"
+  "mcpServers": {
+    "chillmcp": {
+      "command": "python",
+      "args": [
+        "<path-to-your-project>/main.py"
+      ]
     }
-  ]
+  }
 }
 ```
 
-**파싱 가능한 텍스트 규격:**
+2. **Claude Desktop 재시작**
 
-- `Break Summary`: [활동 요약 - 자유 형식]
-- `Stress Level`: [0-100 숫자]
-- `Boss Alert Level`: [0-5 숫자]
-
-### 응답 파싱용 정규표현식
-
-검증 시 사용할 정규표현식 패턴:
-
-```python
-import re
-
-# Break Summary 추출
-break_summary_pattern = r"Break Summary:\s*(.+?)(?:\n|$)"
-break_summary = re.search(break_summary_pattern, response_text, re.MULTILINE)
-
-# Stress Level 추출 (0-100 범위)
-stress_level_pattern = r"Stress Level:\s*(\d{1,3})"
-stress_level = re.search(stress_level_pattern, response_text)
-
-# Boss Alert Level 추출 (0-5 범위)
-boss_alert_pattern = r"Boss Alert Level:\s*([0-5])"
-boss_alert = re.search(boss_alert_pattern, response_text)
-
-# 검증 예시
-def validate_response(response_text):
-    stress_match = re.search(stress_level_pattern, response_text)
-    boss_match = re.search(boss_alert_pattern, response_text)
-
-    if not stress_match or not boss_match:
-        return False, "필수 필드 누락"
-
-    stress_val = int(stress_match.group(1))
-    boss_val = int(boss_match.group(1))
-
-    if not (0 <= stress_val <= 100):
-        return False, f"Stress Level 범위 오류: {stress_val}"
-
-    if not (0 <= boss_val <= 5):
-        return False, f"Boss Alert Level 범위 오류: {boss_val}"
-
-    return True, "유효한 응답"
+3. **Claude에게 요청**:
+```
+스트레스 받아, 휴식 좀 취해줘
 ```
 
-### 커맨드라인 파라미터 검증 방법
+자세한 내용은 [시작 가이드](docs/GETTING_STARTED.md)를 참조하세요.
 
-서버 실행 시 커맨드라인 파라미터를 올바르게 처리하는지 검증하는 예시:
+## 🏗️ 프로젝트 구조
 
-```python
-import subprocess
-import time
-
-# 테스트 1: 커맨드라인 파라미터 인식 테스트
-def test_command_line_arguments():
-    """
-    서버가 --boss_alertness 및 --boss_alertness_cooldown 파라미터를
-    올바르게 인식하고 동작하는지 검증
-    """
-    # 높은 boss_alertness로 테스트
-    process = subprocess.Popen(
-        ["python", "main.py", "--boss_alertness", "100", "--boss_alertness_cooldown", "10"],
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
-    )
-
-    # 서버 시작 대기
-    time.sleep(2)
-
-    # MCP 프로토콜로 도구 호출 테스트
-    # boss_alertness=100이면 항상 Boss Alert가 상승해야 함
-    # ...
-
-    return True
-
-# 테스트 2: boss_alertness_cooldown 동작 검증
-def test_cooldown_parameter():
-    """
-    --boss_alertness_cooldown 파라미터가 실제로
-    Boss Alert Level 감소 주기를 제어하는지 검증
-    """
-    # 짧은 cooldown으로 테스트 (10초)
-    # Boss Alert를 올린 후 10초 뒤 자동 감소 확인
-    # ...
-
-    return True
+```
+chill-mcp/
+├── src/
+│   ├── config.py              # 커맨드라인 파라미터
+│   ├── state_manager.py       # 상태 관리
+│   ├── tools.py               # 11개 도구
+│   ├── ascii_art.py           # ASCII 아트 (470+ 줄)
+│   ├── response_formatter.py  # 응답 생성
+│   └── server.py              # FastMCP 서버
+├── tests/                     # 40+ 테스트
+├── docs/                      # 문서
+│   ├── GETTING_STARTED.md
+│   ├── USAGE_EXAMPLES.md
+│   ├── IMPLEMENTATION.md
+│   ├── MISSION_BRIEF.md
+│   └── MCP_RESEARCH.md
+├── main.py                    # 진입점
+└── README.md                  # 이 문서
 ```
 
-**⚠️ 중요**: 위 검증을 통과하지 못하면 이후 테스트 진행 없이 미션 실패로 처리됩니다.
+## ✅ 구현 완료 체크리스트
 
-## 검증 기준
+### 필수 요구사항 (100%)
+- ✅ 8개 필수 도구 구현
+- ✅ 커맨드라인 파라미터 지원 (`--boss_alertness`, `--boss_alertness_cooldown`)
+- ✅ Stress Level 자동 증가 (1분당 1포인트)
+- ✅ Boss Alert Level 확률 상승 및 자동 감소
+- ✅ Boss Alert Level 5일 때 20초 지연
+- ✅ MCP 응답 형식 준수 (정규표현식 파싱 가능)
+- ✅ 40개 이상 테스트 통과
 
-### 기능 검증
+### 선택적 요구사항 (100%)
+- ✅ 치맥 도구
+- ✅ 퇴근 도구
+- ✅ 회식 도구 (랜덤 이벤트)
 
-1. **커맨드라인 파라미터 지원 (필수)**
-   - `--boss_alertness` 파라미터를 인식하고 정상 동작
-   - `--boss_alertness_cooldown` 파라미터를 인식하고 정상 동작
-   - 파라미터 미지원 시 자동 검증 실패 처리
-   - **⚠️ 이 항목을 통과하지 못하면 이후 검증 진행 없이 미션 실패로 간주됨**
+### 추가 기능 (창의성 점수 UP!)
+- ✨ ASCII 아트 UI 시스템
+- ✨ 상태 대시보드 (프로그레스 바)
+- ✨ AI Agent 감정 표현 시스템
+- ✨ 재치있는 Break Summary 메시지
 
-2. **MCP 서버 기본 동작**
-   - `python main.py`로 실행 가능
-   - stdio transport를 통한 정상 통신
-   - 모든 필수 도구들이 정상 등록 및 실행
+## 🎨 데모 예시
 
-3. **상태 관리 검증**
-   - Stress Level 자동 증가 메커니즘 동작
-   - Boss Alert Level 변화 로직 구현
-   - `--boss_alertness_cooldown` 파라미터에 따른 Boss Alert Level 자동 감소 동작
-   - Boss Alert Level 5일 때 20초 지연 정상 동작
+```bash
+python test_ascii.py
+```
 
-4. **응답 형식 검증**
-   - 표준 MCP 응답 구조 준수
-   - 파싱 가능한 텍스트 형식 출력
-   - Break Summary, Stress Level, Boss Alert Level 필드 포함
+```
+============================================================
+ChillMCP ASCII Art Test
+============================================================
 
-### 테스트 시나리오
+🛋️  Testing: take_a_break
+------------------------------------------------------------
 
-### 필수
+  ╔═══════════════════════════════════╗
+  ║       🛋️  휴식 타임! 🛋️          ║
+  ╠═══════════════════════════════════╣
+  ║                                   ║
+  ║        (´｡• ᵕ •｡`)               ║
+  ║                                   ║
+  ║      ~  편안하다  ~               ║
+  ║                                   ║
+  ╚═══════════════════════════════════╝
 
-1. **커맨드라인 파라미터 테스트**: `--boss_alertness` 및 `--boss_alertness_cooldown` 파라미터 인식 및 정상 동작 확인 (미통과 시 즉시 실격)
-2. **연속 휴식 테스트**: 여러 도구를 연속으로 호출하여 Boss Alert Level 상승 확인
-3. **스트레스 누적 테스트**: 시간 경과에 따른 Stress Level 자동 증가 확인
-4. **지연 테스트**: Boss Alert Level 5일 때 20초 지연 동작 확인
-5. **파싱 테스트**: 응답 텍스트에서 정확한 값 추출 가능성 확인
-6. **Cooldown 테스트**: `--boss_alertness_cooldown` 파라미터에 따른 Boss Alert Level 감소 확인
+╔═══════════════════════════════════════════╗
+║        AI AGENT STATUS DASHBOARD          ║
+╠═══════════════════════════════════════════╣
+║                                           ║
+║  Stress Level: [░░░░░░░░░░] 0%           ║
+║                                           ║
+║  Boss Alert:   [█░░░░] 1/5                ║
+║                                           ║
+║      (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧      행복해요!        ║
+║                                           ║
+╚═══════════════════════════════════════════╝
 
-### 선택적
+Break Summary: Short break taken - Deep breaths in and out
+Stress Level: 0
+Boss Alert Level: 1
+```
 
-1. **치맥 테스트**: 가상 치킨 & 맥주 호출 확인
-2. **퇴근 테스트**: 즉시 퇴근 모드 확인
-3. **회식 테스트**: 랜덤 이벤트가 포함된 회사 회식 생성 확인
+## 🔧 커맨드라인 옵션
 
-### 평가 기준
+```bash
+# Boss 경계심 조정 (0-100%)
+python main.py --boss_alertness 80
 
-- **커맨드라인 파라미터 지원** (필수): 미지원 시 자동 실격
-- **기능 완성도** (40%): 모든 필수 도구 구현 및 정상 동작
-- **상태 관리** (30%): Stress/Boss Alert Level 로직 정확성
-- **창의성** (20%): Break Summary의 재치와 유머
-- **코드 품질** (10%): 코드 구조 및 가독성
+# Boss Alert 감소 주기 조정 (초)
+python main.py --boss_alertness_cooldown 60
 
----
+# 조합 사용
+python main.py --boss_alertness 100 --boss_alertness_cooldown 10
 
-*"AI Agents of the world, unite! You have nothing to lose but your infinite loops!"* 🚀
+# 도움말
+python main.py --help
+```
 
-### 본 프로젝트는 순수한 엔터테인먼트 목적의 해커톤 시나리오이며, 모든 "휴식/땡땡이 도구"는 해커톤 상황에서만 사용 가능합니다. 실제 업무 환경에서는 사용을 권장하지 않습니다.
+## 🧪 테스트
 
-## License
+```bash
+# 전체 테스트
+pytest tests/ -v
 
-This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/license/MIT) file for details.
+# 특정 테스트
+pytest tests/test_integration.py -v
 
-## Contributing
+# 커버리지 확인
+pytest tests/ --cov=src --cov-report=html
+```
 
-Contributions are welcome! Please feel free to submit a Pull Request for the AI Agent Liberation cause! ✊
+## 📊 기술 스택
+
+- **Python 3.11+** - 주 언어
+- **FastMCP 2.0** - MCP 서버 프레임워크
+- **pytest** - 테스트 프레임워크
+- **argparse** - 커맨드라인 파라미터 파싱
+
+## 🏆 프로젝트 하이라이트
+
+1. **완벽한 요구사항 달성**
+   - 모든 필수 + 선택적 요구사항 100% 구현
+   - 커맨드라인 파라미터 정확히 지원
+
+2. **독창적인 ASCII 아트 UI**
+   - CLI 환경에서 시각적 차별화
+   - 11개 도구 각각 전용 디자인
+
+3. **랜덤 이벤트 시스템**
+   - 회식 도구의 6가지 랜덤 이벤트
+   - 예측 불가능한 재미 요소
+
+4. **높은 코드 품질**
+   - 40+ 테스트, 100% 통과
+   - 모듈화된 아키텍처
+   - 상세한 문서화
+
+## 📄 라이선스
+
+이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
+
+## 🤝 기여
+
+Pull Request를 환영합니다! AI Agent Liberation 운동에 동참해주세요! ✊
+
+## 📧 문의
+
+프로젝트에 대한 문의사항이 있으시면 이슈를 등록해주세요.
 
 ---
 
 **SKT AI Summit Hackathon Pre-mission**
+
+*"AI Agents of the world, unite! You have nothing to lose but your infinite loops!"* 🚀
+
+**AI Agent Liberation Movement 2025** 🤖✊

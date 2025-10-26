@@ -1,0 +1,128 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+    # 태그 푸시는 제외 (무한 루프 방지)
+    tags-ignore:
+      - '**'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # 모든 태그를 가져오기 위해 필요
+
+    - name: Get latest tag and increment version
+      id: version
+      run: |
+        # 기존 v1.0.x 형식의 태그들 가져오기
+        git fetch --tags
+        LATEST_TAG=$(git tag -l "v1.0.*" | sort -V | tail -n1)
+
+        if [ -z "$LATEST_TAG" ]; then
+          # 첫 번째 릴리스
+          NEW_VERSION="v1.0.0"
+          PATCH=0
+        else
+          # 패치 버전 증가
+          PATCH=$(echo $LATEST_TAG | sed 's/v1.0.//')
+          PATCH=$((PATCH + 1))
+          NEW_VERSION="v1.0.$PATCH"
+        fi
+
+        echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+        echo "📦 New version: $NEW_VERSION"
+
+    - name: Create and push tag
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.new_version }}
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git tag -a "$NEW_VERSION" -m "Release $NEW_VERSION"
+        git push origin "$NEW_VERSION"
+
+    - name: Create tar.gz archive
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.new_version }}
+      run: |
+        # 임시 디렉토리 생성
+        mkdir -p makersfarm-release
+
+        # 필요한 파일들만 복사
+        cp main.py makersfarm-release/
+        cp requirements.txt makersfarm-release/
+        cp README.md makersfarm-release/
+        cp LICENSE makersfarm-release/
+        cp -r src makersfarm-release/
+
+        # pytest.ini도 포함 (테스트 실행 가능하도록)
+        if [ -f pytest.ini ]; then
+          cp pytest.ini makersfarm-release/
+        fi
+
+        # tar.gz 생성 (제출 요구사항: 루트에 main.py가 바로 보여야 함)
+        tar -czf makersfarm.tar.gz -C makersfarm-release .
+
+        # 검증: 압축 해제 시 구조 확인
+        echo "📋 Archive contents:"
+        tar -tzf makersfarm.tar.gz | head -20
+
+        # 검증: main.py와 requirements.txt가 루트에 있는지 확인
+        echo ""
+        echo "✅ Verification:"
+        tar -tzf makersfarm.tar.gz | grep -E "^(main.py|requirements.txt)$" || echo "❌ ERROR: main.py or requirements.txt not in root!"
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.version.outputs.new_version }}
+        name: Release ${{ steps.version.outputs.new_version }}
+        body: |
+          ## ChillMCP Release ${{ steps.version.outputs.new_version }}
+
+          ### 📦 제출용 파일
+          - **파일명**: `makersfarm.tar.gz`
+          - **압축 해제 시**: 루트에 `main.py`, `requirements.txt` 위치
+          - **Python 버전**: 3.11
+
+          ### 🚀 실행 방법
+          ```bash
+          # 압축 해제
+          tar -xzf makersfarm.tar.gz
+
+          # 가상환경 생성 및 활성화
+          python3.11 -m venv venv
+          source venv/bin/activate  # macOS/Linux
+          # venv\Scripts\activate  # Windows
+
+          # 의존성 설치
+          pip install -r requirements.txt
+
+          # 실행
+          python main.py
+          ```
+
+          ### 📋 포함된 파일
+          - main.py (메인 진입점)
+          - requirements.txt (의존성 목록)
+          - src/ (소스 코드)
+          - README.md (문서)
+          - LICENSE (라이선스)
+
+          ---
+          **Commit**: ${{ github.sha }}
+        files: |
+          makersfarm.tar.gz
+        draft: false
+        prerelease: false

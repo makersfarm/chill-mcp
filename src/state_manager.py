@@ -143,21 +143,22 @@ class StateManager:
             self._stress_level = min(100, self._stress_level + amount)
             return amount
 
-    async def increase_boss_alert(self) -> bool:
+    async def increase_boss_alert(self) -> tuple[bool, int]:
         """
         Potentially increase boss alert level based on boss_alertness probability.
 
         Returns:
-            bool: True if boss alert was increased, False otherwise.
+            tuple[bool, int]: (True if boss alert was increased, old boss alert level)
         """
         async with self._lock:
+            old_level = self._boss_alert_level
             # Roll the dice based on boss_alertness probability
             if random.randint(1, 100) <= self.config.boss_alertness:
                 if self._boss_alert_level < 5:
                     # Setter automatically saves state
                     self._boss_alert_level += 1
-                    return True
-        return False
+                    return (True, old_level)
+        return (False, old_level)
 
     async def change_boss_alert(self, change: int) -> int:
         """

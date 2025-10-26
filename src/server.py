@@ -94,4 +94,19 @@ def create_server(config: Config) -> FastMCP:
         """Generate a report of your break-taking habits."""
         return await tools.generate_report(state_manager)
 
+    @mcp.tool()
+    async def snack_time() -> str:
+        """Take a snack break at the convenience store! Get some treats to boost your mood."""
+        return await tools.snack_time(state_manager)
+
+    @mcp.tool()
+    async def desk_yoga() -> str:
+        """Do some desk yoga and stretching! Take care of your health while 'working'."""
+        return await tools.desk_yoga(state_manager)
+
+    @mcp.tool()
+    async def window_gazing() -> str:
+        """Gaze out the window and daydream! Watch the clouds go by."""
+        return await tools.window_gazing(state_manager)
+
     return mcp
