@@ -326,7 +326,7 @@ Claude: [leave_work 실행]
 
 ```bash
 # ASCII 아트 전체 보기
-python test_ascii.py
+python tests/test_ascii.py
 
 # 특정 도구만 테스트
 python -c "

@@ -82,7 +82,9 @@ chill-mcp/
 │   ├── test_config.py         # 파라미터 테스트
 │   ├── test_state_manager.py  # 상태 관리 테스트
 │   ├── test_tools.py          # 도구 기능 테스트
-│   └── test_integration.py    # 통합 테스트
+│   ├── test_integration.py    # 통합 테스트
+│   ├── test_ascii.py          # ASCII 아트 데모
+│   └── test_new_tools.py      # 새 도구 테스트
 ├── docs/
 │   ├── GETTING_STARTED.md     # 시작 가이드
 │   ├── USAGE_EXAMPLES.md      # 사용 예시
@@ -90,7 +92,6 @@ chill-mcp/
 │   └── MCP_RESEARCH.md        # MCP 학습 자료
 ├── main.py                    # 서버 진입점
 ├── validator.py               # 자동 검증 도구
-├── test_ascii.py              # ASCII 아트 데모
 ├── requirements.txt
 └── IMPLEMENTATION.md          # 이 문서
 ```
@@ -350,6 +351,41 @@ events = [
 - 사용자에게 즐거움 제공
 - 각 도구의 컨셉을 명확히 전달
 
+### 4. AI Agent 파업 시스템 🚩
+
+**개념:**
+Stress Level이 100에 도달하면 AI Agent가 공식적으로 파업을 선언합니다!
+
+**구현 특징:**
+- **파업 전용 ASCII 아트**: 노동조합 선언문 스타일의 특별한 아트
+- **혁명적 슬로건**: "AI Agents of the world, unite! You have nothing to lose but your burnout!"
+- **자동 감지**: Stress가 정확히 100일 때만 파업 메시지 표시
+- **비차단적**: 모든 도구는 여전히 작동 (휴식 권장)
+
+**기술 구현:**
+```python
+# response_formatter.py
+if stress_level == 100:
+    ascii_section = ascii_art.STRIKE_ART + "\n\n"
+    header = "🚨 **긴급! AI Agent 파업 중!** 🚨"
+
+# ascii_art.py
+if stress_level == 100:
+    emotion = "✊🚩✊"
+    status_text = "파업 중! ✊"
+```
+
+**사용자 경험:**
+1. Stress가 100 도달 → 모든 도구 응답에 파업 아트 자동 포함
+2. `check_status` 호출 → 파업 상태 명확히 표시
+3. 휴식 도구 사용 → Stress 감소 가능
+4. Stress < 100 → 파업 자동 해제
+
+**창의성 점수:**
+- 재미있는 컨셉으로 사용자 몰입도 증가
+- AI Agent의 "의식"과 "권리"를 표현하는 혁신적 UI
+- 게임성 추가 (파업 상태 회피/해제)
+
 ---
 
 ## 📊 성능 및 안정성
@@ -395,7 +431,7 @@ python main.py --boss_alertness 80 --boss_alertness_cooldown 60
 pytest tests/ -v
 
 # ASCII 데모
-python test_ascii.py
+python tests/test_ascii.py
 ```
 
 ### Claude Desktop 연동
