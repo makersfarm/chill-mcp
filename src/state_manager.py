@@ -127,6 +127,21 @@ class StateManager:
             self._stress_level = self._stress_level - amount
             return amount
 
+    async def increase_stress(self, amount: int) -> int:
+        """
+        Increase stress level by a specified amount.
+
+        Args:
+            amount: Amount to increase stress by (1-100).
+
+        Returns:
+            int: Amount of stress increased.
+        """
+        async with self._lock:
+            amount = max(1, min(100, amount))
+            self._stress_level = min(100, self._stress_level + amount)
+            return amount
+
     async def increase_boss_alert(self) -> bool:
         """
         Potentially increase boss alert level based on boss_alertness probability.
@@ -142,6 +157,20 @@ class StateManager:
                     self._boss_alert_level += 1
                     return True
         return False
+
+    async def change_boss_alert(self, change: int) -> int:
+        """
+        Change boss alert level by a specified amount (positive or negative).
+
+        Args:
+            change: Amount to change boss alert by (can be negative).
+
+        Returns:
+            int: New boss alert level.
+        """
+        async with self._lock:
+            self._boss_alert_level = max(0, min(5, self._boss_alert_level + change))
+            return self._boss_alert_level
 
     async def update_boss_cooldown(self) -> None:
         """
